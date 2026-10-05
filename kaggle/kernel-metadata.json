@@ -1,0 +1,13 @@
+{
+  "id": "nguyendangthuc11/camera-health-acdc-rain",
+  "title": "camera-health-acdc-rain",
+  "code_file": "run.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": ["njayadithya/rgb-anon-trainvaltest"],
+  "competition_sources": [],
+  "kernel_sources": []
+}

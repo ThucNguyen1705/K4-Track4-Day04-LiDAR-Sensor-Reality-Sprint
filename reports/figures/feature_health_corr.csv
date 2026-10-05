@@ -1,0 +1,12 @@
+,spearman
+entropy,-0.194
+color_statistics,-0.068
+edge_density,-0.027
+contrast,-0.007
+mean_brightness,0.008
+gradient_magnitude,0.009
+dark_pixel_ratio,0.02
+brightness_std,0.031
+laplacian_variance,0.123
+noise_estimate,0.16
+saturation_ratio,0.195

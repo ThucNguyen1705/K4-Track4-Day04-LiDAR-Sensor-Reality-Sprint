@@ -1,0 +1,9 @@
+                                  image  health    class  camera_weight
+          GOPR0572_frame_000255_ref.jpg   0.963  Healthy          0.963
+        GOPR0572_frame_000255_rain1.jpg   0.885  Healthy          0.885
+        GOPR0572_frame_000255_rain2.jpg   0.674 Degraded          0.674
+        GOPR0572_frame_000255_rain3.jpg   0.202 Critical          0.202
+        GOPR0572_frame_000255_blur2.jpg   0.793 Degraded          0.793
+       GOPR0572_frame_000255_noise3.jpg   0.108 Critical          0.108
+        GOPR0572_frame_000255_dark2.jpg   0.698 Degraded          0.698
+GOPR0572_frame_000255_overexposure2.jpg   0.843  Healthy          0.843

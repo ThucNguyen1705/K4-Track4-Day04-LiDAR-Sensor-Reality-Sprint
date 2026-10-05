@@ -1,0 +1,12 @@
+feature,median_teammate,median_ours,ratio_median,spearman,pearson
+laplacian_variance,965.4153,417.7577,2.2837,0.9872,0.9912
+mean_brightness,0.4195,0.4195,1.0,1.0,1.0
+brightness_std,0.2947,0.296,0.9966,0.9996,0.9997
+contrast,0.8549,0.8549,1.0,0.9992,0.9993
+entropy,7.2854,7.2908,0.9992,0.9994,0.9995
+saturation_ratio,0.0172,0.0003,2.2089,0.9386,0.884
+dark_pixel_ratio,0.0537,0.0571,0.9509,0.9995,0.9996
+noise_estimate,1.659,1.356,1.1923,0.818,0.8429
+edge_density,0.0708,0.0541,1.3023,0.9647,0.9717
+gradient_magnitude,46.7811,37.5555,1.2453,0.9809,0.9853
+color_statistics,12.2142,12.2619,0.9968,1.0,1.0

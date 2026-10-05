@@ -1,10 +1,9 @@
-"""[Member 2] Shannon entropy của histogram ảnh xám.
-"""
+"""[Member 2] Lượng thông tin của ảnh."""
+import numpy as np
 
 
-def main():
-    raise NotImplementedError
-
-
-if __name__ == "__main__":
-    main()
+def entropy(gray):
+    """Shannon entropy (bit) của histogram 256 mức xám, tối đa 8."""
+    p = np.bincount(gray.ravel(), minlength=256) / gray.size
+    p = p[p > 0]
+    return float(-(p * np.log2(p)).sum())

@@ -1,5 +1,7 @@
 # Track-4-Camera Health Assessment
 
+📄 **Báo cáo kết quả:** [reports/REPORT.md](reports/REPORT.md) · 👥 **Thành viên:** [TEAMMATES.md](TEAMMATES.md)
+
 Đánh giá "sức khoẻ" camera cho ADAS: **image-quality features → XGBoost → Health ∈ [0, 1]**.
 Detector (YOLO11s / RT-DETR) chỉ chạy **offline** để tạo và kiểm chứng nhãn Health.
 
@@ -28,13 +30,17 @@ Dataset (M1) → IQA Features (M2) → XGBoost Health (M3) → ADAS Validation +
 ├── features/                  # 👤 Member 2 — IQA Feature Engineering
 │   ├── blur.py  brightness.py  entropy.py  noise.py  edges.py  color.py
 │   ├── spatial.py             # lưới 3x3
-│   └── extract_features.py    # → outputs/features/features.csv
+│   ├── extractor.py           # extract(img) -> 11 global + 36 grid
+│   ├── extract_features.py    # → outputs/features/features.csv
+│   └── crosscheck.py          # so với rain_features_csv/ của teammate
 │
 ├── health_model/              # 👤 Member 3 — Ground Truth + XGBoost
 │   ├── make_labels.py         # → outputs/labels/health_labels.csv
 │   ├── baselines.py           # Rule-based, LinReg, RF, LightGBM
 │   ├── train_xgboost.py
 │   ├── evaluate.py            # → outputs/results/
+│   ├── predict.py             # sản phẩm cuối: ảnh -> health / class / camera weight
+│   ├── mock_data.py           # dữ liệu giả để test (--mock)
 │   └── model/model_xgb.json
 │
 ├── perception/                # 👤 Member 4 — ADAS Validation
@@ -48,7 +54,10 @@ Dataset (M1) → IQA Features (M2) → XGBoost Health (M3) → ADAS Validation +
 │   ├── adaptive_weight.py     # Health → camera weight
 │   └── app.py
 │
-├── outputs/                   # file trung gian giữa các module
+├── kaggle/                    # pipeline.py + build.py -> kernel Kaggle GPU (ACDC rain)
+├── reports/                   # REPORT.md, figures/, make_figures.py, individual/ (5 báo cáo riêng)
+├── rain_features_csv/         # features ảnh mưa thật do teammate tính (kiểm chéo)
+├── outputs/                   # file trung gian giữa các module + logs/
 │   ├── features/  perception/  labels/
 │   └── results/ (results.csv, predictions.csv, plots/)
 └── notebooks/                 # thử nghiệm, đặt tên <member>_<topic>.ipynb
@@ -60,15 +69,16 @@ Khoá chung của mọi file là **`image_id`**. Đổi schema phải báo cả 
 
 | File | Người tạo | Người dùng | Cột |
 |---|---|---|---|
-| `dataset/metadata.csv` | M1 | tất cả | `image_id, file_path, source_image_id, scene_id, camera, condition, degradation_type, degradation_level, day_night, weather, split` |
-| `outputs/features/features.csv` | M2 | M3, M4 | `image_id, laplacian_var, brightness_mean, brightness_std, contrast, entropy, saturation_ratio, dark_ratio, noise_sigma, edge_density, gradient_mag, ...` + cột lưới `<feature>_r{row}c{col}` |
+| `dataset/metadata.csv` | M1 | tất cả | `image_id, file_path, parent_id, scene_id, camera, condition, degradation_type, degradation_level, day_night, weather, split` |
+| `outputs/features/features.csv` | M2 | M3, M4 | `image_id, parent_id, split, condition, degradation_type, degradation_level, is_synthetic, laplacian_variance, mean_brightness, brightness_std, contrast, entropy, saturation_ratio, dark_pixel_ratio, noise_estimate, edge_density, gradient_magnitude, color_statistics` (+ tuỳ chọn cột lưới `<feature>_r{row}c{col}`) |
 | `outputs/perception/per_image_metrics.csv` | M4 | M3 | `image_id, n_gt, tp, fp, fn, precision, recall` |
-| `outputs/labels/health_labels.csv` | M3 | M3, M4 | `image_id, recall, recall_clean, health, health_class` |
-| `outputs/results/predictions.csv` | M3 | M4 | `image_id, model, health_pred` |
+| `outputs/perception/real_rain_proxy.csv` | M4 | M3 | `image_id, n_ref, tp, fp, proxy_recall` (ảnh mưa thật, không có ảnh clean khớp pixel) |
+| `outputs/labels/health_labels.csv` | M3 | M3, M4 | `image_id, n_gt, recall, recall_clean, health, health_class` |
+| `outputs/results/predictions.csv` | M3 | M4 | `image_id, parent_id, condition, degradation_type, degradation_level, health, pred_<Model>` |
 
 Ghi chú:
-- `source_image_id`: id của ảnh clean gốc (ảnh clean thì bằng chính `image_id`) — cần để tính `health = recall / recall_clean`.
-- `degradation_type ∈ {none, blur, noise, brightness, rain}`; `camera` (vd. `CAM_FRONT`) dùng cho adaptive weighting.
+- `parent_id`: id của ảnh clean gốc (ảnh clean thì bằng chính `image_id`) — cần để tính `health = recall / recall_clean`.
+- `degradation_type ∈ {none, rain, blur, noise, dark, overexposure, real_rain}`, `degradation_level` là số nguyên (0 = clean); `camera` (vd. `CAM_FRONT`) dùng cho adaptive weighting.
 - Split chia theo `scene_id` và **chỉ M1 tạo**; ảnh corrupted thuộc cùng split với ảnh gốc.
 - Detector chạy 1 lần ở `perception/` (M4); M3 dùng kết quả đó để tạo nhãn, không chạy lại detector.
 
@@ -81,7 +91,7 @@ pip install -r requirements.txt
 python -m data.build_metadata
 python -m features.extract_features
 python -m perception.evaluate
-python -m health_model.make_labels
+python -m health_model.make_labels      # thêm --mock để chạy trên dữ liệu giả (health_model/mock_data.py)
 python -m health_model.train_xgboost
 python -m health_model.evaluate
 python -m analysis.correlation
@@ -94,6 +104,26 @@ Trong script, lấy path qua config:
 from common.config import load_config
 cfg = load_config()
 meta_path = cfg["paths"]["metadata"]
+```
+
+## Member 3 — chạy trên ACDC rain (Kaggle GPU)
+
+`kaggle/pipeline.py` (dùng package `features/` của Member 2) chạy trên Kaggle (T4) với dataset
+[njayadithya/rgb-anon-trainvaltest](https://www.kaggle.com/datasets/njayadithya/rgb-anon-trainvaltest)
+và sinh `features.csv`, `per_image_metrics.csv`, `real_rain_proxy.csv`:
+
+- Ảnh clean = `rain/*_ref` (trời quang), pseudo-GT = YOLO11x; degraded = rain/blur/noise/dark/overexposure
+  sinh pixel-aligned; detector đánh giá = YOLO11s → `health = recall / recall_clean`.
+- Ảnh mưa thật không có ảnh clean khớp pixel → chỉ dùng để kiểm chứng (proxy recall YOLO11s vs YOLO11x).
+- Phần degradation/detector trong script là bản tạm; M1/M4 thay bằng module chính thức, giữ schema.
+- Lệnh tái lập đầy đủ + bằng chứng: [reports/REPORT.md §10](reports/REPORT.md#10-tái-lập-kết-quả).
+
+```bash
+# KAGGLE_API_TOKEN đặt trong .env (không commit)
+set -a && . ./.env && set +a
+python kaggle/build.py                       # nhúng package features/ vào kernel
+kaggle kernels push -p kaggle/kernel --accelerator NvidiaTeslaT4
+kaggle kernels output nguyendangthuc11/camera-health-acdc-rain -p outputs/kaggle
 ```
 
 ## Quy ước làm việc

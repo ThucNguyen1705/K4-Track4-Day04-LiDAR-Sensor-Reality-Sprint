@@ -1,0 +1,3 @@
+image_id,relative_path,split,condition,laplacian_variance,mean_brightness,brightness_std,contrast,entropy,saturation_ratio,dark_pixel_ratio,noise_estimate,edge_density,gradient_magnitude,color_statistics
+val/GOPR0571/GOPR0571_frame_000232_rgb_anon,val/GOPR0571/GOPR0571_frame_000232_rgb_anon.png,val,rain,949.218458,108.770309,81.647995,0.847059,7.239531,0.001784,0.051011,1.866807,0.072109,45.766968,14.877639
+val/GOPR0571/GOPR0571_frame_000275_rgb_anon,val/GOPR0571/GOPR0571_frame_000275_rgb_anon.png,val,rain,1452.917774,96.798386,76.661575,0.886275,7.294562,0.100534,0.040855,2.978412,0.091493,57.659466,12.175147

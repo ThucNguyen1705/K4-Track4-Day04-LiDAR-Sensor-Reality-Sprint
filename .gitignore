@@ -3,11 +3,8 @@ dataset/*
 !dataset/.gitkeep
 !dataset/metadata.csv
 
-# Output lớn (giữ lại results.csv + plots để báo cáo)
-outputs/features/*.csv
-outputs/perception/*.csv
-outputs/labels/*.csv
-outputs/results/predictions.csv
+# Output: commit CSV kết quả làm bằng chứng benchmark; bỏ output thô của Kaggle (weights, zip ảnh)
+outputs/kaggle/
 
 # Model weights detector
 *.pt
@@ -21,3 +18,5 @@ __pycache__/
 venv/
 .ipynb_checkpoints/
 .env
+outputs/mock/
+kaggle/kernel/

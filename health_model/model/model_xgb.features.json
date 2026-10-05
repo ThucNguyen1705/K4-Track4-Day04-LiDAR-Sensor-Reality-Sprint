@@ -1,0 +1,1 @@
+["laplacian_variance", "mean_brightness", "brightness_std", "contrast", "entropy", "saturation_ratio", "dark_pixel_ratio", "noise_estimate", "edge_density", "gradient_magnitude", "color_statistics"]
