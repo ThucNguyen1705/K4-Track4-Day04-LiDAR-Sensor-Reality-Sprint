@@ -1,0 +1,37 @@
+# Config dùng chung cho cả nhóm. Đổi path/tham số ở đây, KHÔNG hard-code trong script.
+seed: 42
+
+paths:
+  raw: dataset/raw
+  processed: dataset            # dataset/train, dataset/val, dataset/test
+  corrupted: dataset/corrupted
+  metadata: dataset/metadata.csv
+  features: outputs/features/features.csv
+  perception: outputs/perception/per_image_metrics.csv
+  labels: outputs/labels/health_labels.csv
+  model: health_model/model/model_xgb.json
+  results: outputs/results
+
+image:                          # Member 1 chốt kích thước chuẩn
+  width: 1280
+  height: 720
+
+split:                          # chia theo scene_id
+  train: 0.7
+  val: 0.15
+  test: 0.15
+
+degradations:
+  blur: [1, 2, 3, 4]
+  noise: [1, 2, 3]
+  brightness: [dark, normal, overexposure]
+  rain: [1, 2, 3]
+
+health_classes:                 # health >= healthy -> Healthy; >= degraded -> Degraded; còn lại Critical
+  healthy: 0.8
+  degraded: 0.5
+
+detector:
+  model: yolo11s.pt
+  conf: 0.25
+  iou_match: 0.5
