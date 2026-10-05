@@ -4,7 +4,7 @@ rain_features_csv/<split>/<sequence>/features.csv: 11 feature trên ảnh mưa t
 mean_brightness / brightness_std ở thang 0-255. So với outputs/features/features.csv (1280x720, thang 0-1):
   1. Spearman / Pearson / tỉ lệ median từng feature trên cùng ảnh.
   2. Dự đoán health của XGBoost khi đưa feature teammate vào (chỉ đổi đơn vị brightness)
-     -> đo độ nhạy của model với quy ước tính feature.
+     -> đo độ nhạy của model với quy ước tính feature
 
 Output: outputs/results/feature_crosscheck.csv, real_rain_teammate_predictions.csv, plots/feature_crosscheck.png
 """

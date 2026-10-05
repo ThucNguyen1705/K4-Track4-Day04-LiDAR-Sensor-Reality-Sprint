@@ -1,6 +1,6 @@
-"""[Member 2] Feature theo lưới 3x3: glare / blur / bẩn kính thường chỉ ở một vùng ảnh.
+"""[Member 2] Feature theo lưới 3x3: glare / blur / bẩn kính thường chỉ ở một vùng ảnh
 
-Tên cột: <feature>_r{row}c{col}, r0 = hàng trên, c0 = cột trái (vd. edge_density_r1c1 = vùng giữa).
+Tên cột: <feature>_r{row}c{col}, r0 = hàng trên, c0 = cột trái (vd. edge_density_r1c1 = vùng giữa)
 """
 
 

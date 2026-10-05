@@ -1,7 +1,8 @@
 """[Member 2] Trích toàn bộ IQA features cho 1 ảnh.
 
     from features.extractor import extract
-    feats = extract(cv2.imread(path))          # dict: 11 global (+ 36 grid)
+    feats = extract(cv2.imread(path))      
+    # dict: 11 global (+ 36 grid)
 """
 import cv2
 
@@ -33,7 +34,7 @@ GRID_FEATURES = [f"{k}_r{i}c{j}" for i in range(3) for j in range(3) for k in GR
 
 
 def extract(bgr, size=(1280, 720), grid=True):
-    """bgr: ảnh uint8 BGR (cv2.imread). Resize về `size` để feature so sánh được giữa các nguồn."""
+    """bgr: ảnh uint8 BGR (cv2.imread). Resize về `size` để feature so sánh được giữa các nguồn"""
     if size and (bgr.shape[1], bgr.shape[0]) != tuple(size):
         bgr = cv2.resize(bgr, tuple(size), interpolation=cv2.INTER_AREA)
     gray = cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY)

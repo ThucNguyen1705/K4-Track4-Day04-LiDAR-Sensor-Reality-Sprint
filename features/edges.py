@@ -1,4 +1,4 @@
-"""[Member 2] Mức độ chi tiết."""
+"""[Member 2] Mức độ chi tiết"""
 import cv2
 
 

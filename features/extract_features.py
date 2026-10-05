@@ -1,4 +1,4 @@
-"""[Member 2] Đọc dataset/metadata.csv (Member 1), trích features cho mọi ảnh.
+"""[Member 2] Đọc dataset/metadata.csv (Member 1), trích features cho mọi ảnh
 
 Output: outputs/features/features.csv
   image_id, parent_id, split, condition, degradation_type, degradation_level, is_synthetic,
