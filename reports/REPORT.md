@@ -124,6 +124,10 @@ XGBoost (`max_depth 5`, `lr 0.03`, early stopping trên val ở vòng 260), trai
 
 Nguồn: [outputs/results/results.csv](../outputs/results/results.csv), log [outputs/logs/health_model_run.log](../outputs/logs/health_model_run.log).
 
+**Biểu đồ chính** — health theo từng mức lỗi: nhãn GT, XGBoost và baseline rule-based ([reports/make_main_chart.py](make_main_chart.py)):
+
+![main](figures/main_health_by_level.png)
+
 | ![pred vs true](figures/pred_vs_true.png) | ![confusion](figures/confusion_matrix.png) |
 |---|---|
 
